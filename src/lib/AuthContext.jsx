@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     const accountType =
       appUserRecord?.account_type ||
       authUser.user_metadata?.account_type ||
-      (role === 'admin' ? 'officer' : null);
+      (role === 'admin' ? 'officer' : 'business');
 
     return {
       id: base44UserId || appUserRecord?.id || authUser.id,
