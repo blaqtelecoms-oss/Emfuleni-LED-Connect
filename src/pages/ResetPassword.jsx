@@ -18,6 +18,10 @@ export default function ResetPassword() {
   const [checkingSession, setCheckingSession] = useState(true);
 
   useEffect(() => {
+    if (!supabase) {
+      setCheckingSession(false);
+      return;
+    }
     // Supabase redirects back with tokens in the URL hash. The client's
     // detectSessionInUrl option picks them up automatically; we just need
     // to wait for the session to be established.
@@ -42,6 +46,7 @@ export default function ResetPassword() {
     }
     setLoading(true);
     try {
+      if (!supabase) throw new Error("Supabase is not configured");
       const { error: updateError } = await supabase.auth.updateUser({
         password: newPassword,
       });
