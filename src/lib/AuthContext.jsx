@@ -47,6 +47,7 @@ export const AuthProvider = ({ children }) => {
       phone: appUserRecord?.phone,
       area: appUserRecord?.area,
       officer_role: appUserRecord?.officer_role,
+      profile_picture: appUserRecord?.profile_picture || authUser.user_metadata?.profile_picture,
       ...appUserRecord, // spread any remaining fields
       // Re-set the computed fields in case the spread overwrote them
       id: base44UserId || appUserRecord?.id || authUser.id,

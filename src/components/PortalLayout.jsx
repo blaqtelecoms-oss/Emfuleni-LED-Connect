@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "@/lib/AuthContext";
+import { supabase } from "@/lib/supabaseClient";
 import { LogOut } from "lucide-react";
 import PortalCalendar from "@/components/PortalCalendar";
 import { useLedProfile } from "@/hooks/useLedProfile";
 import MobileBottomNav from "@/components/MobileBottomNav";
+import EditProfileDialog from "@/components/EditProfileDialog";
 import { HeaderArt, EmfuleniBrand } from "@/components/EmfuleniBrandArt";
 
 export default function PortalLayout({ portal, navItems, activeKey, allowedAccountType, children }) {
   const { user, logout } = useAuth();
   const { profile, business } = useLedProfile();
+  const [editOpen, setEditOpen] = useState(false);
 
   // Account-type gate: send users to their own portal.
   // Invited LED officers log in as role "admin" with no account_type — treat them as officer.
@@ -87,9 +90,30 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
 
                 {/* Identity */}
                 <div className="text-center my-3">
-                  <div className="w-[54px] h-[54px] rounded-full mx-auto mb-1.5 grid place-items-center text-[18px] font-medium text-white bg-aqua shadow-[0_0_0_4px_hsl(var(--card)),0_0_0_5px_hsl(var(--line))]">
-                    {initials}
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setEditOpen(true)}
+                    className="w-[54px] h-[54px] rounded-full mx-auto mb-1.5 grid place-items-center text-[18px] font-medium text-white bg-aqua shadow-[0_0_0_4px_hsl(var(--card)),0_0_0_5px_hsl(var(--line))] overflow-hidden cursor-pointer relative group"
+                    title="Edit profile"
+                  >
+                    {user?.profile_picture
+                      ? (() => {
+                          const { data } = supabase.storage
+                            .from("avatars")
+                            .getPublicUrl(user.profile_picture);
+                          return (
+                            <img
+                              src={data.publicUrl}
+                              alt={displayName}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          );
+                        })()
+                      : initials}
+                  </button>
                   <p className="text-[12px] text-mute">Welcome back,</p>
                   <b className="block text-[14px] font-semibold text-ink mt-0.5">{displayName}</b>
                   <span className="block text-[11px] text-mute mt-0.5">{subtitle}</span>
@@ -166,6 +190,9 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
         primaryKeys={navItems.slice(0, 4).map((n) => n.key)}
         onLogout={handleLogout}
       />
+
+      {/* Profile edit dialog — shared by both portals */}
+      <EditProfileDialog open={editOpen} onOpenChange={setEditOpen} />
     </div>
   );
 }
