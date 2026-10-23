@@ -6,13 +6,11 @@ import MunicipalityLogo from "@/components/MunicipalityLogo";
 import { toast } from "@/components/ui/use-toast";
 import LoginHero from "@/components/auth/LoginHero";
 import {
-  User,
   Store,
   Eye,
   EyeOff,
   Loader2,
   Check,
-  ArrowLeft,
   Smartphone,
   MessageSquare,
 } from "lucide-react";
@@ -23,14 +21,12 @@ export default function Home() {
   const { user, isAuthenticated, isLoadingAuth } = useAuth();
 
   const [mode, setMode] = useState("login"); // login | signup
-  const [role, setRole] = useState("member"); // member | business
   const [officerMode, setOfficerMode] = useState(false);
 
   // form state
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
-  const [fullName, setFullName] = useState("");
   const [ownerName, setOwnerName] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [sector, setSector] = useState("Retail");
@@ -49,10 +45,8 @@ export default function Home() {
     return <Navigate to={`/${targetPortal}`} replace />;
   }
 
-  const loginLabel = officerMode
-    ? "Log in"
-    : `Log in as ${role === "member" ? "Member" : "Business"}`;
-  const signupLabel = `Sign up as ${role === "member" ? "Member" : "Business"}`;
+  const loginLabel = officerMode ? "Log in" : "Log in as Business";
+  const signupLabel = "Sign up as Business";
 
   const validateSignup = () => {
     if (!email.trim() || !/^\S+@\S+\.\S+$/.test(email)) return "Enter a valid email address.";
@@ -60,12 +54,8 @@ export default function Home() {
     if (!phone.trim()) return "Your cell number is required for SMS alerts.";
     if (!area.trim()) return "Your area is required.";
     if (!consent) return "Please accept the POPIA notice and terms to continue.";
-    if (role === "business") {
-      if (!businessName.trim()) return "Your business name is required.";
-      if (!ownerName.trim()) return "The owner's full name is required.";
-    } else {
-      if (!fullName.trim()) return "Your full name is required.";
-    }
+    if (!businessName.trim()) return "Your business name is required.";
+    if (!ownerName.trim()) return "The owner's full name is required.";
     return null;
   };
 
@@ -106,12 +96,12 @@ export default function Home() {
         password,
         options: {
           data: {
-            full_name: role === "business" ? ownerName.trim() : fullName.trim(),
-            account_type: role,
+            full_name: ownerName.trim(),
+            account_type: "business",
             phone: phone.trim(),
             area: area.trim(),
-            business_name: role === "business" ? businessName.trim() : null,
-            sector: role === "business" ? sector : null,
+            business_name: businessName.trim(),
+            sector: sector,
           },
         },
       });
@@ -145,12 +135,10 @@ export default function Home() {
             <Check className="w-9 h-9" strokeWidth={2.5} />
           </div>
           <h2 className="font-display text-[26px] font-semibold leading-tight">
-            {role === "business" ? "Business registered" : "You're in"}
+            Business registered
           </h2>
           <p className="text-mute text-sm mt-2 max-w-xs">
-            {role === "business"
-              ? "Check your email to confirm your account, then log in to complete verification."
-              : "Check your email to confirm your account, then log in to set up your community profile."}
+            Check your email to confirm your account, then log in to complete verification.
           </p>
           <button
             onClick={() => {
@@ -199,36 +187,16 @@ export default function Home() {
       )}
 
       <h2 className="font-display text-[28px] font-semibold text-center leading-tight">
-        {officerMode ? "LED staff log in" : isSignup ? "Create your account" : "Welcome back"}
+        {officerMode ? "LED staff log in" : isSignup ? "Create your business account" : "Welcome back"}
       </h2>
       <p className="text-mute text-sm text-center mt-1 mb-5">
         {officerMode ? "Sign in to the LED Officer portal." : "Emfuleni's economy, in one place."}
       </p>
 
-      {/* Role cards */}
-      {!officerMode && (
-        <div className="grid grid-cols-2 gap-2.5 mb-5">
-          <RoleCard
-            selected={role === "member"}
-            onClick={() => setRole("member")}
-            icon={User}
-            title="Member"
-            desc="Residents & job seekers"
-          />
-          <RoleCard
-            selected={role === "business"}
-            onClick={() => setRole("business")}
-            icon={Store}
-            title="Business"
-            desc="Spazas, SMMEs, co-ops"
-          />
-        </div>
-      )}
-
       {error && <div className="mb-3 p-3 rounded-xl bg-red-100 text-red-800 text-sm dark:bg-red-500/15 dark:text-red-300">{error}</div>}
 
       <form onSubmit={isSignup ? doSignup : doLogin} className="space-y-3">
-        {isSignup && role === "business" && (
+        {isSignup && (
           <Field label="Business name">
             <input
               value={businessName}
@@ -239,10 +207,10 @@ export default function Home() {
           </Field>
         )}
         {isSignup && (
-          <Field label={role === "business" ? "Owner full name" : "Full name"}>
+          <Field label="Owner full name">
             <input
-              value={role === "business" ? ownerName : fullName}
-              onChange={(e) => (role === "business" ? setOwnerName(e.target.value) : setFullName(e.target.value))}
+              value={ownerName}
+              onChange={(e) => setOwnerName(e.target.value)}
               placeholder="First and last name"
               className="led-input"
             />
@@ -269,7 +237,7 @@ export default function Home() {
             />
           </Field>
         )}
-        {isSignup && role === "business" && (
+        {isSignup && (
           <Field label="Sector">
             <select value={sector} onChange={(e) => setSector(e.target.value)} className="led-input">
               {SECTORS.map((s) => (
@@ -398,30 +366,6 @@ function AuthCard({ right, children }) {
         <div className="hidden md:block">{right}</div>
       </div>
     </div>
-  );
-}
-
-function RoleCard({ selected, onClick, icon: Icon, title, desc }) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={selected}
-      className={`relative text-left rounded-2xl border-[1.5px] p-3 transition-all ${
-        selected
-          ? "border-[hsl(var(--green))] bg-[hsl(var(--green)/0.06)] shadow-[0_0_0_4px_hsl(var(--green)/14%)]"
-          : "border-[hsl(var(--line))] hover:border-[hsl(var(--green)/0.5)] bg-[hsl(var(--shell)/0.5)]"
-      }`}
-    >
-      <Icon className="w-[22px] h-[22px] text-[hsl(var(--green))] mb-1.5" strokeWidth={1.8} />
-      <b className="block text-sm text-ink">{title}</b>
-      <span className="block text-xs text-mute leading-tight">{desc}</span>
-      {selected && (
-        <span className="absolute top-2 right-2.5 w-[18px] h-[18px] rounded-full bg-[hsl(var(--green))] text-white text-[11px] grid place-items-center">
-          ✓
-        </span>
-      )}
-    </button>
   );
 }
 

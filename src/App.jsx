@@ -15,9 +15,7 @@ import ResetPassword from '@/pages/ResetPassword';
 import OfficerPortal from '@/pages/officer/OfficerPortal';
 import OfficerSignIn from '@/pages/officer/OfficerSignIn';
 import BusinessPortal from '@/pages/business/BusinessPortal';
-import MemberPortal from '@/pages/member/MemberPortal';
 import OnboardingWizard from '@/pages/onboarding/OnboardingWizard';
-import MemberOnboarding from '@/pages/onboarding/MemberOnboarding';
 // Add page imports here
 
 const AuthenticatedApp = () => {
@@ -55,10 +53,7 @@ const AuthenticatedApp = () => {
       <Route element={<ProtectedRoute unauthenticatedElement={<Navigate to="/" replace />} />}>
         <Route path="/business" element={<BusinessPortal />} />
         <Route path="/business/:section" element={<BusinessPortal />} />
-        <Route path="/member" element={<MemberPortal />} />
-        <Route path="/member/:section" element={<MemberPortal />} />
         <Route path="/onboarding" element={<OnboardingWizard />} />
-        <Route path="/member-onboarding" element={<MemberOnboarding />} />
       </Route>
 
       <Route path="*" element={<PageNotFound />} />
