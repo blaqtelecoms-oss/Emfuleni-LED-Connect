@@ -69,15 +69,30 @@ export default function EditProfileDialog({ open, onOpenChange }) {
     }
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop() || "png";
-      const path = `${user.supabase_id}/avatar-${Date.now()}.${ext}`;
-      const { error } = await supabase.storage
-        .from("avatars")
-        .upload(path, file, { upsert: true });
-      if (error) throw error;
-      const { data } = supabase.storage.from("avatars").getPublicUrl(path);
-      setAvatarUrl(data.publicUrl);
-      setPendingPicturePath(path);
+      // Convert to base64 for the server-side upload endpoint
+      const reader = new FileReader();
+      const base64 = await new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result.split(",")[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      const response = await fetch("/api/upload-avatar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          file: base64,
+          filename: file.name,
+          userId: user.supabase_id,
+          contentType: file.type,
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error || "Upload failed");
+
+      setAvatarUrl(result.publicUrl);
+      setPendingPicturePath(result.path);
     } catch (err) {
       toast({
         title: "Upload failed",
