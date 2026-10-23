@@ -9,6 +9,7 @@ import StatusPill from "@/components/StatusPill";
 import { SectionLoading } from "@/components/SectionStates";
 import { formatRand, formatSAST } from "@/lib/ledUtils";
 import { ChevronRight, FileWarning, Landmark, Briefcase, GraduationCap, ShieldAlert } from "lucide-react";
+import OnboardingProgress from "@/components/business/OnboardingProgress";
 
 export default function BusinessDashboard() {
   const { user } = useAuth();
@@ -71,23 +72,10 @@ export default function BusinessDashboard() {
       <PageHeader title={`Hello, ${business?.name || user?.full_name || "there"}`} subtitle="Your business at a glance — documents, tenders, funding and training." />
 
       {showWizardBanner ? (
-        <Link
-          to="/onboarding"
-          className="led-task g flex items-center gap-3 mb-5 hover:border-brand/40"
-        >
-          <ShieldAlert className="w-5 h-5 text-brand flex-none" />
-          <div className="min-w-0 flex-1">
-            <b className="text-sm text-ink block">
-              {draftApp ? "Continue your verification application" : "Complete your verification application"}
-            </b>
-            <span className="text-mute text-xs">
-              {draftApp
-                ? "Pick up where you left off — your progress is saved."
-                : "Verify your business to unlock tenders, funding and the local directory."}
-            </span>
-          </div>
-          <ChevronRight className="w-4 h-4 text-mute flex-none" />
-        </Link>
+        <OnboardingProgress
+          draftStep={draftApp?.draft_step || 1}
+          submitted={false}
+        />
       ) : null}
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mb-5">
