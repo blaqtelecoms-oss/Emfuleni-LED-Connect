@@ -62,9 +62,9 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
   };
 
   return (
-    <div className="min-h-screen portal-bg p-4">
+    <div className="h-screen portal-bg overflow-hidden p-4">
       <div className="relative max-w-[1240px] mx-auto">
-        <div className="relative rounded-[28px] overflow-hidden bg-shell shadow-[0_20px_60px_rgba(0,0,0,0.25)] min-h-[calc(100vh-32px)]">
+        <div className="relative rounded-[28px] overflow-hidden portal-bg shadow-[0_20px_60px_rgba(0,0,0,0.25)] h-[calc(100vh-32px)]">
           {/* Header art bar — Emfuleni palette pattern, behind content */}
           <div className="absolute top-0 left-0 right-0 h-[96px] overflow-hidden z-0">
             <HeaderArt />
@@ -76,10 +76,10 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
           </div>
 
           {/* Content grid — above header art */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[240px_1fr_276px] min-h-[calc(100vh-32px)]">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[240px_1fr_276px] h-[calc(100vh-32px)] overflow-hidden">
             {/* Sidebar */}
-            <aside className="hidden lg:flex lg:p-3.5">
-              <div className="w-full bg-card rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.14)] flex flex-col p-4">
+            <aside className="hidden lg:flex lg:p-3.5 min-h-0">
+              <div className="w-full h-full bg-card rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.14)] flex flex-col p-4 overflow-hidden">
                 {/* Brand */}
                 <div className="flex flex-col items-center gap-1.5 text-center pb-2">
                   <EmfuleniBrand />
@@ -146,12 +146,12 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
             </aside>
 
             {/* Main content */}
-            <main className="mt-[96px] p-5 lg:p-6 lg:px-8 min-w-0 pb-28 lg:pb-6">
+            <main className="mt-[96px] p-5 lg:p-6 lg:px-8 min-w-0 pb-28 lg:pb-6 overflow-y-auto min-h-0">
               {children}
             </main>
 
             {/* Right calendar panel */}
-            <aside className="hidden lg:block mt-[96px] border-l border-line bg-soft overflow-y-auto">
+            <aside className="hidden lg:block mt-[96px] border-l border-line bg-soft overflow-y-auto min-h-0">
               <PortalCalendar portal={portal} />
             </aside>
           </div>
