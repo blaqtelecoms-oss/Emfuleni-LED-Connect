@@ -1,0 +1,16 @@
+{
+  "name": "Emfuleni LED Connect",
+  "short_name": "LED Connect",
+  "description": "Automated MSME Data Capturing, Profiling and Management System for Emfuleni Local Municipality.",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1d6b38",
+  "background_color": "#f7f6f3",
+  "icons": [
+    {
+      "src": "https://base44.com/logo_v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
