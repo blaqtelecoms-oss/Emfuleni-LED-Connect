@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }) => {
     // account_type: prefer app_users, then derive from role
     const accountType =
       appUserRecord?.account_type ||
+      authUser.user_metadata?.account_type ||
       (role === 'admin' ? 'officer' : null);
 
     return {
