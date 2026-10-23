@@ -1,0 +1,88 @@
+{
+  "name": "User",
+  "type": "object",
+  "properties": {
+    "role": {
+      "type": "string",
+      "enum": [
+        "admin",
+        "user"
+      ],
+      "default": "user"
+    },
+    "account_type": {
+      "type": "string",
+      "enum": [
+        "member",
+        "business",
+        "officer"
+      ],
+      "default": "member"
+    },
+    "officer_role": {
+      "type": "string",
+      "enum": [
+        "officer",
+        "manager"
+      ],
+      "default": "officer"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "area": {
+      "type": "string"
+    },
+    "ward": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "isiZulu",
+        "Afrikaans"
+      ],
+      "default": "English"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alert_preferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "power_outages",
+          "water_outages",
+          "road_closures",
+          "events",
+          "new_jobs"
+        ]
+      }
+    },
+    "alert_channel": {
+      "type": "string",
+      "enum": [
+        "SMS",
+        "WhatsApp",
+        "app"
+      ],
+      "default": "app"
+    },
+    "popia_consent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "account_type"
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "name": "VerificationApplication",
+  "type": "object",
+  "properties": {
+    "business": {
+      "type": "string"
+    },
+    "reference": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "submitted",
+        "in_review",
+        "incomplete",
+        "verified",
+        "declined"
+      ],
+      "default": "draft"
+    },
+    "draft_step": {
+      "type": "number",
+      "default": 1
+    },
+    "submitted_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "assigned_to": {
+      "type": "string"
+    },
+    "site_visit_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision_reason": {
+      "type": "string"
+    },
+    "decision_note": {
+      "type": "string"
+    },
+    "decided_by": {
+      "type": "string"
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "consent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "declaration_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature_name": {
+      "type": "string"
+    },
+    "duplicate_flag": {
+      "type": "boolean",
+      "default": false
+    },
+    "created_by_officer": {
+      "type": "boolean",
+      "default": false
+    },
+    "owner_id_number": {
+      "type": "string"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "business",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

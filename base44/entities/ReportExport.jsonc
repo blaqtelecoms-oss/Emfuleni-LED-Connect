@@ -1,0 +1,63 @@
+{
+  "name": "ReportExport",
+  "properties": {
+    "file": {
+      "type": "string"
+    },
+    "filters": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "format": {
+      "enum": [
+        "csv",
+        "xlsx",
+        "pdf"
+      ],
+      "type": "string"
+    },
+    "generated_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "generated_by": {
+      "type": "string"
+    },
+    "is_demo_data": {
+      "default": false,
+      "type": "boolean"
+    },
+    "row_count": {
+      "type": "number"
+    },
+    "type": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  },
+  "type": "object"
+}

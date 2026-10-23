@@ -1,0 +1,114 @@
+{
+  "name": "BusinessDocument",
+  "type": "object",
+  "properties": {
+    "business": {
+      "type": "string"
+    },
+    "application": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "CIPC registration",
+        "B-BBEE affidavit",
+        "Photos",
+        "Bank confirmation letter",
+        "Tax clearance certificate"
+      ]
+    },
+    "document_type": {
+      "type": "string"
+    },
+    "requirement_level": {
+      "type": "string",
+      "enum": [
+        "required",
+        "needed",
+        "optional"
+      ],
+      "default": "required"
+    },
+    "file": {
+      "type": "string"
+    },
+    "file_name": {
+      "type": "string"
+    },
+    "file_size": {
+      "type": "number"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "uploaded",
+        "approved",
+        "rejected"
+      ],
+      "default": "uploaded"
+    },
+    "reviewer_note": {
+      "type": "string"
+    },
+    "reviewed_by": {
+      "type": "string"
+    },
+    "reviewed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "version": {
+      "type": "number",
+      "default": 1
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "business"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

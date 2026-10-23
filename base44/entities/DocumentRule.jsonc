@@ -1,0 +1,59 @@
+{
+  "name": "DocumentRule",
+  "type": "object",
+  "properties": {
+    "document_type": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "hint": {
+      "type": "string"
+    },
+    "requirement_level": {
+      "type": "string",
+      "enum": [
+        "required",
+        "needed",
+        "optional"
+      ],
+      "default": "required"
+    },
+    "conditions": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "document_type",
+    "label",
+    "requirement_level"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

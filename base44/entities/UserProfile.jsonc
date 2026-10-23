@@ -1,0 +1,223 @@
+{
+  "name": "UserProfile",
+  "type": "object",
+  "properties": {
+    "user": {
+      "type": "string"
+    },
+    "account_type": {
+      "type": "string",
+      "enum": [
+        "member",
+        "business",
+        "officer"
+      ]
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "alt_phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "area": {
+      "type": "string"
+    },
+    "ward": {
+      "type": "string"
+    },
+    "language": {
+      "type": "string",
+      "enum": [
+        "English",
+        "isiZulu",
+        "Afrikaans"
+      ],
+      "default": "English"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "alert_preferences": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "power_outages",
+          "water_outages",
+          "road_closures",
+          "events",
+          "new_jobs"
+        ]
+      }
+    },
+    "alert_channel": {
+      "type": "string",
+      "enum": [
+        "SMS",
+        "WhatsApp",
+        "app"
+      ],
+      "default": "app"
+    },
+    "popia_consent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "date_of_birth": {
+      "type": "string",
+      "format": "date"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "Female",
+        "Male",
+        "Other",
+        "Prefer not to say"
+      ]
+    },
+    "marital_status": {
+      "type": "string",
+      "enum": [
+        "Single",
+        "Married",
+        "Divorced",
+        "Widowed",
+        "Living together",
+        "Prefer not to say"
+      ]
+    },
+    "address": {
+      "type": "string"
+    },
+    "housing_tenure": {
+      "type": "string",
+      "enum": [
+        "Own",
+        "Rent",
+        "Family home",
+        "Municipal housing",
+        "Informal dwelling",
+        "Other"
+      ]
+    },
+    "years_in_area": {
+      "type": "number"
+    },
+    "household_size": {
+      "type": "number"
+    },
+    "dependants_count": {
+      "type": "number"
+    },
+    "employment_status": {
+      "type": "string",
+      "enum": [
+        "Employed full-time",
+        "Employed part-time",
+        "Self-employed",
+        "Unemployed",
+        "Student",
+        "Retired",
+        "Unable to work"
+      ]
+    },
+    "occupation": {
+      "type": "string"
+    },
+    "income_band": {
+      "type": "string",
+      "enum": [
+        "No income",
+        "Under R2 000",
+        "R2 000 to R5 000",
+        "R5 000 to R10 000",
+        "R10 000 to R20 000",
+        "Over R20 000",
+        "Prefer not to say"
+      ]
+    },
+    "support_needed": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "Jobs",
+          "Skills training",
+          "Bursaries",
+          "Business support",
+          "Housing",
+          "Health services",
+          "Social relief",
+          "Youth programmes"
+        ]
+      }
+    },
+    "onboarding_step": {
+      "type": "number",
+      "default": 1
+    },
+    "onboarding_completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "user",
+    "account_type"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "name": "OpportunityResponse",
+  "type": "object",
+  "properties": {
+    "opportunity": {
+      "type": "string"
+    },
+    "responder": {
+      "type": "string"
+    },
+    "business": {
+      "type": "string"
+    },
+    "quote_amount": {
+      "type": "number"
+    },
+    "note": {
+      "type": "string"
+    },
+    "share_skills_profile": {
+      "type": "boolean",
+      "default": false
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "shortlisted",
+        "hired_or_awarded",
+        "rejected"
+      ],
+      "default": "new"
+    },
+    "decided_by": {
+      "type": "string"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "opportunity",
+    "responder"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,216 @@
+{
+  "name": "Program",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "summary": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "funder": {
+      "type": "string",
+      "enum": [
+        "Municipality",
+        "NYDA",
+        "SEDA",
+        "SEFA",
+        "COGTA",
+        "DSBD",
+        "IDC",
+        "Other"
+      ]
+    },
+    "support_type": {
+      "type": "string"
+    },
+    "funding_type": {
+      "type": "string",
+      "enum": [
+        "Grant",
+        "Loan",
+        "Voucher",
+        "Mixed support",
+        "Non-financial"
+      ]
+    },
+    "target_groups": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "min_amount": {
+      "type": "number"
+    },
+    "max_amount": {
+      "type": "number"
+    },
+    "call_status": {
+      "type": "string",
+      "enum": [
+        "standing",
+        "open_call",
+        "closed"
+      ],
+      "default": "standing"
+    },
+    "deadline": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "document",
+              "profile",
+              "info"
+            ]
+          },
+          "field": {
+            "type": "string"
+          },
+          "document_type": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "hint": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "type"
+        ]
+      }
+    },
+    "application_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "number",
+              "textarea",
+              "select",
+              "date",
+              "checkbox"
+            ]
+          },
+          "required": {
+            "type": "boolean",
+            "default": false
+          },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "placeholder": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "label",
+          "type"
+        ]
+      }
+    },
+    "required_documents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "CIPC registration",
+          "B-BBEE affidavit",
+          "Photos",
+          "Bank confirmation letter",
+          "Tax clearance certificate"
+        ]
+      }
+    },
+    "source_url": {
+      "type": "string"
+    },
+    "source_name": {
+      "type": "string"
+    },
+    "source_verified_at": {
+      "type": "string",
+      "format": "date"
+    },
+    "apply_url": {
+      "type": "string"
+    },
+    "slots_total": {
+      "type": "number",
+      "default": 0
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "closed"
+      ],
+      "default": "open"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "name",
+    "funder",
+    "status"
+  ],
+  "rls": {
+    "read": {},
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

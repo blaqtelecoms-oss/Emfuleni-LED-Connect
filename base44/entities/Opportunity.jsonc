@@ -1,0 +1,117 @@
+{
+  "name": "Opportunity",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "tender",
+        "job"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "details": {
+      "type": "string"
+    },
+    "budget": {
+      "type": "number"
+    },
+    "pay": {
+      "type": "string"
+    },
+    "closing_date": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sector": {
+      "type": "string"
+    },
+    "positions": {
+      "type": "number",
+      "default": 1
+    },
+    "required_skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "posted_by_type": {
+      "type": "string",
+      "enum": [
+        "led",
+        "business"
+      ],
+      "default": "led"
+    },
+    "business": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending_approval",
+        "open",
+        "closed"
+      ],
+      "default": "open"
+    },
+    "notify_option": {
+      "type": "boolean",
+      "default": true
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "type",
+    "title",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.status": "open"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "created_by_id": "{{user.id}}"
+        }
+      ]
+    },
+    "create": {},
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "name": "Ward",
+  "properties": {
+    "area_name": {
+      "description": "Township, suburb or town name for the ward",
+      "type": "string"
+    },
+    "area_type": {
+      "enum": [
+        "township",
+        "rural",
+        "urban",
+        "mixed"
+      ],
+      "type": "string"
+    },
+    "is_demo_data": {
+      "default": false,
+      "type": "boolean"
+    },
+    "number": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "number",
+    "area_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  },
+  "type": "object"
+}
