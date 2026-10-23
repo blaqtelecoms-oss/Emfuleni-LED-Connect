@@ -62,7 +62,7 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
   };
 
   return (
-    <div className="min-h-screen bg-page p-4">
+    <div className="min-h-screen portal-bg p-4">
       <div className="relative max-w-[1240px] mx-auto">
         <div className="relative rounded-[28px] overflow-hidden bg-shell shadow-[0_20px_60px_rgba(0,0,0,0.25)] min-h-[calc(100vh-32px)]">
           {/* Header art bar — Emfuleni palette pattern, behind content */}
