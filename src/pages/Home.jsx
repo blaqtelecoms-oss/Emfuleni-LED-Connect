@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/lib/supabaseClient";
 import { useAuth } from "@/lib/AuthContext";
 import MunicipalityLogo from "@/components/MunicipalityLogo";
-import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { toast } from "@/components/ui/use-toast";
 import LoginHero from "@/components/auth/LoginHero";
 import {
@@ -40,22 +39,11 @@ export default function Home() {
   const [consent, setConsent] = useState(false);
 
   // flow state
-  const [step, setStep] = useState("form"); // form | otp | success
-  const [otpPurpose, setOtpPurpose] = useState("signup"); // signup | sms_login
-  const [otp, setOtp] = useState("");
+  const [step, setStep] = useState("form"); // form | success
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [resendIn, setResendIn] = useState(0);
-
-  // resend countdown (must run before any early return — rules of hooks)
-  useEffect(() => {
-    if (resendIn <= 0) return;
-    const t = setInterval(() => setResendIn((s) => s - 1), 1000);
-    return () => clearInterval(t);
-  }, [resendIn]);
 
   // Already signed in? Route to the right portal.
-  // Invited LED officers log in as role "admin" with no account_type — treat them as officer.
   const targetPortal = user?.account_type || (user?.role === "admin" ? "officer" : null);
   if (isAuthenticated && targetPortal) {
     return <Navigate to={`/${targetPortal}`} replace />;
@@ -90,7 +78,11 @@ export default function Home() {
     }
     setLoading(true);
     try {
-      await base44.auth.loginViaEmailPassword(email.trim(), password);
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+      if (signInError) throw signInError;
       window.location.href = "/";
     } catch (err) {
       setError(err.message || "Invalid email or password.");
@@ -109,11 +101,22 @@ export default function Home() {
     }
     setLoading(true);
     try {
-      await base44.auth.register({ email: email.trim(), password });
-      setOtpPurpose("signup");
-      setOtp("");
-      setResendIn(30);
-      setStep("otp");
+      const { error: signUpError } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            full_name: role === "business" ? ownerName.trim() : fullName.trim(),
+            account_type: role,
+            phone: phone.trim(),
+            area: area.trim(),
+            business_name: role === "business" ? businessName.trim() : null,
+            sector: role === "business" ? sector : null,
+          },
+        },
+      });
+      if (signUpError) throw signUpError;
+      setStep("success");
     } catch (err) {
       setError(err.message || "Sign up failed. This email may already be registered.");
     } finally {
@@ -121,163 +124,17 @@ export default function Home() {
     }
   };
 
-  const startSmsCode = async (channel) => {
+  const startSmsCode = (channel) => {
     setError("");
     if (!phone.trim()) {
       setError("Enter your cell number first to get a code.");
       return;
     }
-    try {
-      await base44.entities.NotificationLog.create({
-        recipient: phone.trim(),
-        channel,
-        template: "login_otp",
-        body: `Your Automated MSME Data Capturing, Profiling and Management System ${channel} login code is [code]. (stub)`,
-        status: "queued (stub)",
-      });
-    } catch {
-      /* non-blocking */
-    }
-    setOtpPurpose("sms_login");
-    setOtp("");
-    setResendIn(30);
-    setStep("otp");
     toast({
       title: `${channel} code requested`,
       description: "SMS and WhatsApp code sending is a planned feature. For now, please log in with your email and password.",
     });
   };
-
-  const doVerify = async () => {
-    setError("");
-    if (otp.length < 6) {
-      setError("Enter the 6-digit code.");
-      return;
-    }
-    if (otpPurpose === "sms_login") {
-      // SMS/WhatsApp login needs a messaging provider — stubbed for now.
-      setError("SMS and WhatsApp login needs a messaging provider to be connected. Please go back and log in with your email and password.");
-      return;
-    }
-    setLoading(true);
-    try {
-      const result = await base44.auth.verifyOtp({ email: email.trim(), otpCode: otp });
-      if (result?.access_token) base44.auth.setToken(result.access_token);
-      const me = await base44.auth.me();
-      // persist account type + profile fields
-      const consentAt = new Date().toISOString();
-      await base44.auth
-        .updateMe({
-          account_type: role,
-          phone: phone.trim(),
-          area: area.trim(),
-          language: "English",
-          popia_consent_at: consentAt,
-          full_name: role === "business" ? ownerName.trim() : fullName.trim(),
-        })
-        .catch(() => {});
-      if (role === "business") {
-        await base44.entities.Business.create({
-          owner: me.id,
-          name: businessName.trim(),
-          sector,
-          area: area.trim(),
-          phone: phone.trim(),
-          status: "pending",
-        });
-      }
-      await base44.entities.UserProfile.create({
-        user: me.id,
-        account_type: role,
-        full_name: role === "business" ? ownerName.trim() : fullName.trim(),
-        phone: phone.trim(),
-        area: area.trim(),
-        language: "English",
-        popia_consent_at: consentAt,
-      });
-      setStep("success");
-    } catch (err) {
-      setError(err.message || "Verification failed. Check the code and try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const resend = async () => {
-    if (otpPurpose === "signup") {
-      try {
-        await base44.auth.resendOtp(email.trim());
-        setResendIn(30);
-        toast({ title: "Code sent", description: "Check your email for the new code." });
-      } catch (err) {
-        setError(err.message || "Failed to resend code.");
-      }
-    } else {
-      setResendIn(30);
-    }
-  };
-
-  // ---- OTP step ----
-  if (step === "otp") {
-    return (
-      <AuthCard right={<LoginHero />}>
-        <button
-          onClick={() => {
-            setStep("form");
-            setError("");
-          }}
-          className="flex items-center gap-1.5 text-mute text-sm mb-4 hover:text-ink"
-        >
-          <ArrowLeft className="w-4 h-4" /> Back
-        </button>
-        <h2 className="font-display text-[26px] font-semibold text-center leading-tight">
-          {otpPurpose === "signup" ? "Verify your email" : "Enter your code"}
-        </h2>
-        <p className="text-mute text-sm text-center mt-1 mb-6">
-          {otpPurpose === "signup"
-            ? `We sent a 6-digit code to ${email.trim()}`
-            : `Enter the 6-digit code we sent to ${phone.trim() || "your phone"}`}
-        </p>
-
-        {error && <div className="mb-4 p-3 rounded-xl bg-red-100 text-red-800 text-sm dark:bg-red-500/15 dark:text-red-300">{error}</div>}
-
-        <div className="flex justify-center mb-6">
-          <InputOTP maxLength={6} value={otp} onChange={setOtp} autoFocus autoComplete="one-time-code">
-            <InputOTPGroup>
-              <InputOTPSlot index={0} />
-              <InputOTPSlot index={1} />
-              <InputOTPSlot index={2} />
-              <InputOTPSlot index={3} />
-              <InputOTPSlot index={4} />
-              <InputOTPSlot index={5} />
-            </InputOTPGroup>
-          </InputOTP>
-        </div>
-
-        <button
-          onClick={doVerify}
-          disabled={loading || otp.length < 6}
-          className="btn-grad w-full rounded-xl py-3.5 font-semibold text-white shadow-lg disabled:opacity-60 flex items-center justify-center gap-2"
-        >
-          {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-          {otpPurpose === "signup" ? "Verify and continue" : "Continue"}
-        </button>
-
-        <p className="text-center text-sm text-mute mt-4">
-          {resendIn > 0 ? (
-            `Resend code in ${resendIn}s`
-          ) : (
-            <>
-              Didn't get it?{" "}
-              <button onClick={resend} className="text-brand font-semibold hover:underline">
-                Resend code
-              </button>
-            </>
-          )}
-        </p>
-      </AuthCard>
-    );
-  }
 
   // ---- Success step ----
   if (step === "success") {
@@ -292,16 +149,17 @@ export default function Home() {
           </h2>
           <p className="text-mute text-sm mt-2 max-w-xs">
             {role === "business"
-              ? "Let's verify your business. Complete your profile and upload your documents so an LED officer can review them."
-              : "Let's set up your community profile so we can match you with jobs, updates and services in your ward."}
+              ? "Check your email to confirm your account, then log in to complete verification."
+              : "Check your email to confirm your account, then log in to set up your community profile."}
           </p>
           <button
             onClick={() => {
-              window.location.href = role === "business" ? "/onboarding" : "/member-onboarding";
+              setStep("form");
+              setMode("login");
             }}
             className="btn-grad w-full mt-6 rounded-xl py-3.5 font-semibold text-white shadow-lg"
           >
-            {role === "business" ? "Start verification" : "Complete your profile"}
+            Back to log in
           </button>
         </div>
       </AuthCard>
@@ -339,8 +197,6 @@ export default function Home() {
           </button>
         </div>
       )}
-
-      {/* officer login removed from the public page — LED staff use the /login invite link */}
 
       <h2 className="font-display text-[28px] font-semibold text-center leading-tight">
         {officerMode ? "LED staff log in" : isSignup ? "Create your account" : "Welcome back"}

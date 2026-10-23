@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { base44 } from "@/api/base44Client";
+import { supabase } from "@/lib/supabaseClient";
 import GoogleIcon from "@/components/GoogleIcon";
 import { Image } from "@/components/ui/image";
 import { LOGO_URL } from "@/lib/ledUtils";
@@ -21,7 +21,11 @@ export default function OfficerSignIn() {
     setError("");
     setLoading(true);
     try {
-      await base44.auth.loginViaEmailPassword(email, password);
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      });
+      if (signInError) throw signInError;
       window.location.href = "/officer";
     } catch (err) {
       setError(err.message || "Invalid email or password");
@@ -31,7 +35,10 @@ export default function OfficerSignIn() {
   };
 
   const handleGoogle = () => {
-    base44.auth.loginWithProvider("google", "/officer");
+    supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: `${window.location.origin}/officer` },
+    });
   };
 
   return (
