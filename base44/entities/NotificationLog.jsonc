@@ -1,0 +1,60 @@
+{
+  "name": "NotificationLog",
+  "type": "object",
+  "properties": {
+    "recipient": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "SMS",
+        "WhatsApp",
+        "Email",
+        "app"
+      ]
+    },
+    "template": {
+      "type": "string"
+    },
+    "body": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "queued (stub)",
+        "sent",
+        "failed"
+      ],
+      "default": "queued (stub)"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "recipient",
+    "channel",
+    "body"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {},
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

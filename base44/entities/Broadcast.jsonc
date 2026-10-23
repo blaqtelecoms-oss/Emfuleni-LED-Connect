@@ -1,0 +1,61 @@
+{
+  "name": "Broadcast",
+  "type": "object",
+  "properties": {
+    "audience_filter": {
+      "type": "string"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "SMS",
+        "WhatsApp",
+        "Email"
+      ]
+    },
+    "body": {
+      "type": "string"
+    },
+    "sent_by": {
+      "type": "string"
+    },
+    "sent_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "recipient_count": {
+      "type": "number",
+      "default": 0
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "channel",
+    "body"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

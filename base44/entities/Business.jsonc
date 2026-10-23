@@ -1,0 +1,315 @@
+{
+  "name": "Business",
+  "properties": {
+    "address": {
+      "type": "string"
+    },
+    "area": {
+      "type": "string"
+    },
+    "cipc_number": {
+      "type": "string"
+    },
+    "claim_status": {
+      "enum": [
+        "unclaimed",
+        "invited",
+        "claimed"
+      ],
+      "type": "string"
+    },
+    "csd_checked_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "csd_checked_by": {
+      "type": "string"
+    },
+    "csd_number": {
+      "description": "CSD supplier number, e.g. MAAA0123456",
+      "type": "string"
+    },
+    "csd_status": {
+      "description": "Owner's answer: on the Central Supplier Database?",
+      "enum": [
+        "Yes",
+        "No",
+        "Not sure"
+      ],
+      "type": "string"
+    },
+    "csd_verified": {
+      "default": false,
+      "description": "An officer confirmed the CSD registration",
+      "type": "boolean"
+    },
+    "description": {
+      "type": "string"
+    },
+    "has_bank_account": {
+      "type": "boolean"
+    },
+    "import_batch": {
+      "type": "string"
+    },
+    "is_demo_data": {
+      "default": false,
+      "type": "boolean"
+    },
+    "jobs_count": {
+      "default": 0,
+      "type": "number"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "merged_into": {
+      "description": "Set when this record was merged into another",
+      "type": "string"
+    },
+    "municipal_reference": {
+      "description": "The municipality's own record number from the imported file",
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "number_of_owners": {
+      "default": 1,
+      "type": "number"
+    },
+    "officer_notes": {
+      "type": "string"
+    },
+    "owner": {
+      "type": "string"
+    },
+    "owner_email": {
+      "type": "string"
+    },
+    "owner_name": {
+      "type": "string"
+    },
+    "owner_phone": {
+      "type": "string"
+    },
+    "ownership_profile": {
+      "items": {
+        "enum": [
+          "Women-owned",
+          "Youth-owned (18 to 35)",
+          "Owned by a person with a disability",
+          "Military veteran",
+          "Prefer not to say"
+        ],
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "premises_type": {
+      "enum": [
+        "Home-based",
+        "Rented premises",
+        "Municipal stall or market",
+        "Mobile or street trader",
+        "Farm or rural land",
+        "Industrial site"
+      ],
+      "type": "string"
+    },
+    "profile_views": {
+      "default": 0,
+      "type": "number"
+    },
+    "registration_type": {
+      "enum": [
+        "Informal or not registered",
+        "Sole proprietor",
+        "Private company (Pty) Ltd",
+        "Close corporation (CC)",
+        "Co-operative",
+        "NPC or NGO",
+        "Partnership"
+      ],
+      "type": "string"
+    },
+    "sector": {
+      "description": "Primary sector (legacy single value). Use sectors for the full classification.",
+      "type": "string"
+    },
+    "sectors": {
+      "items": {
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "source": {
+      "default": "self_registered",
+      "enum": [
+        "self_registered",
+        "municipal_import",
+        "officer_assisted"
+      ],
+      "type": "string"
+    },
+    "staff_band": {
+      "enum": [
+        "Owner only",
+        "2 to 5",
+        "6 to 10",
+        "11 to 25",
+        "26 to 50",
+        "51 or more"
+      ],
+      "type": "string"
+    },
+    "status": {
+      "default": "pending",
+      "enum": [
+        "draft",
+        "pending",
+        "verified",
+        "rejected",
+        "declined"
+      ],
+      "type": "string"
+    },
+    "support_needed": {
+      "items": {
+        "enum": [
+          "Funding",
+          "Training",
+          "Mentorship",
+          "Tender opportunities",
+          "Market access",
+          "Compliance help",
+          "Equipment",
+          "Business space"
+        ],
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "tax_checked_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "tax_compliance_status": {
+      "enum": [
+        "Compliant",
+        "Not compliant",
+        "Not registered",
+        "Not sure"
+      ],
+      "type": "string"
+    },
+    "trading_days": {
+      "items": {
+        "enum": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "trading_name": {
+      "type": "string"
+    },
+    "turnover_band": {
+      "enum": [
+        "Under R50 000",
+        "R50 000 to R250 000",
+        "R250 000 to R1 million",
+        "R1 million to R5 million",
+        "Over R5 million"
+      ],
+      "type": "string"
+    },
+    "vat_status": {
+      "enum": [
+        "Yes",
+        "No",
+        "Not sure"
+      ],
+      "type": "string"
+    },
+    "verified_at": {
+      "format": "date-time",
+      "type": "string"
+    },
+    "verified_by": {
+      "type": "string"
+    },
+    "ward": {
+      "description": "Ward label, e.g. Ward 14",
+      "type": "string"
+    },
+    "ward_number": {
+      "description": "Numeric ward, used for ward reporting",
+      "type": "number"
+    },
+    "year_started": {
+      "type": "number"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "rls": {
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "delete": {
+      "$or": [
+        {
+          "data.owner": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "data.owner": "{{user.id}}"
+        },
+        {
+          "data.status": "verified"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "data.owner": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  },
+  "type": "object"
+}

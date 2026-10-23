@@ -1,0 +1,107 @@
+{
+  "name": "Notice",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": [
+        "Electricity outage",
+        "Water outage",
+        "Road closure",
+        "Community event",
+        "General notice"
+      ]
+    },
+    "headline": {
+      "type": "string"
+    },
+    "areas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "all_areas": {
+      "type": "boolean",
+      "default": false
+    },
+    "starts_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ends_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "details": {
+      "type": "string"
+    },
+    "channels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "App",
+          "SMS",
+          "WhatsApp"
+        ]
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "scheduled",
+        "active",
+        "resolved",
+        "cancelled"
+      ],
+      "default": "active"
+    },
+    "created_by": {
+      "type": "string"
+    },
+    "is_demo_data": {
+      "type": "boolean",
+      "default": false
+    }
+  },
+  "required": [
+    "type",
+    "headline",
+    "status"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "data.status": {
+            "$in": [
+              "active",
+              "resolved"
+            ]
+          }
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

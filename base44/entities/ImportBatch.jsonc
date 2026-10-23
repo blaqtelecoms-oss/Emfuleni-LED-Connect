@@ -1,0 +1,85 @@
+{
+  "name": "ImportBatch",
+  "properties": {
+    "duplicates_skipped": {
+      "default": 0,
+      "type": "number"
+    },
+    "errors": {
+      "description": "Rows that were rejected, with the reason",
+      "items": {
+        "additionalProperties": true,
+        "type": "object"
+      },
+      "type": "array"
+    },
+    "file_name": {
+      "type": "string"
+    },
+    "imported": {
+      "default": 0,
+      "type": "number"
+    },
+    "imported_by": {
+      "type": "string"
+    },
+    "is_demo_data": {
+      "default": false,
+      "type": "boolean"
+    },
+    "mapping": {
+      "additionalProperties": true,
+      "type": "object"
+    },
+    "notes": {
+      "type": "string"
+    },
+    "rejected": {
+      "default": 0,
+      "type": "number"
+    },
+    "status": {
+      "default": "completed",
+      "enum": [
+        "completed",
+        "completed_with_errors",
+        "failed"
+      ],
+      "type": "string"
+    },
+    "total_rows": {
+      "default": 0,
+      "type": "number"
+    },
+    "warnings": {
+      "default": 0,
+      "type": "number"
+    }
+  },
+  "required": [
+    "file_name"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  },
+  "type": "object"
+}
