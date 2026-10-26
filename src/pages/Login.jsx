@@ -19,6 +19,10 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    if (!supabase) {
+      setError("Authentication is not configured. Please contact support.");
+      return;
+    }
     setLoading(true);
     try {
       const { error: signInError } = await supabase.auth.signInWithPassword({
@@ -35,6 +39,10 @@ export default function Login() {
   };
 
   const handleGoogle = () => {
+    if (!supabase) {
+      setError("Authentication is not configured. Please contact support.");
+      return;
+    }
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}${returnTo}` },

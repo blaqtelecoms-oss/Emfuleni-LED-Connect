@@ -90,7 +90,7 @@ export default function FundingDetail({ program, business, docs, existingApp, on
           </div>
 
           {/* Official source */}
-          <div className="rounded-xl bg-soft/60 border border-line p-3 text-xs">
+          <div className="rounded-lg border border-line bg-[hsl(137_50%_97%)] p-3 text-xs">
             <div className="flex items-center gap-1.5 text-ink font-semibold mb-1">
               <User className="w-3.5 h-3.5" /> Source & how to apply
             </div>
@@ -139,8 +139,8 @@ export default function FundingDetail({ program, business, docs, existingApp, on
 
 function Fact({ label, value }) {
   return (
-    <div className="rounded-lg bg-soft/50 p-2.5">
-      <p className="text-[10px] font-semibold text-mute uppercase tracking-wide">{label}</p>
+    <div className="rounded-lg border border-line bg-[hsl(137_50%_97%)] p-2.5">
+      <p className="text-[10px] font-bold text-[hsl(137_57%_22%)] uppercase tracking-wide">{label}</p>
       <p className="text-xs text-ink mt-0.5 leading-snug">{value}</p>
     </div>
   );

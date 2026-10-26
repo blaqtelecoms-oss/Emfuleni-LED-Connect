@@ -23,6 +23,10 @@ export default function Register() {
       setError("Passwords do not match");
       return;
     }
+    if (!supabase) {
+      setError("Authentication is not configured. Please contact support.");
+      return;
+    }
     setLoading(true);
     try {
       const { error: signUpError } = await supabase.auth.signUp({
@@ -39,6 +43,10 @@ export default function Register() {
   };
 
   const handleGoogle = () => {
+    if (!supabase) {
+      setError("Authentication is not configured. Please contact support.");
+      return;
+    }
     supabase.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: `${window.location.origin}${safeReturnTo()}` },

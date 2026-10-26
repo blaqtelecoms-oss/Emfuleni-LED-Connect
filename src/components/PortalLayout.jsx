@@ -147,8 +147,8 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
                         aria-current={active ? "page" : undefined}
                         className={`flex items-center gap-3 w-full px-2.5 py-2 rounded-[12px] text-[13px] cursor-pointer transition-colors ${
                           active
-                            ? "text-ink font-semibold"
-                            : "text-mute hover:bg-soft hover:text-ink"
+                            ? "bg-[#0f9a42]/10 text-ink font-semibold"
+                            : "text-ink hover:bg-soft"
                         }`}
                       >
                         <Icon className="w-[17px] h-[17px] flex-none" strokeWidth={1.8} />
@@ -160,7 +160,7 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
                   {/* Logout */}
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-3 w-full px-2.5 py-2 rounded-[12px] text-[13px] text-mute hover:bg-soft hover:text-ink cursor-pointer transition-colors border-t border-line pt-3 mt-2"
+                    className="flex items-center gap-3 w-full px-2.5 py-2 rounded-[12px] text-[13px] text-ink hover:bg-soft cursor-pointer transition-colors border-t border-line pt-3 mt-2"
                   >
                     <LogOut className="w-[17px] h-[17px] flex-none" strokeWidth={1.8} />
                     <span>Log out</span>

@@ -9,15 +9,15 @@ import { formatSAST } from "@/lib/ledUtils";
 import { toast } from "@/components/ui/use-toast";
 import { Megaphone, Check } from "lucide-react";
 
-const TYPES = ["Electricity outage", "Water outage", "Road closure", "Community event", "General notice"];
+const TYPES = ["Business registration", "Verification update", "Compliance notice", "Funding opportunity", "General business notice"];
 const CHANNELS = ["App", "SMS", "WhatsApp"];
-// Left-rail colour per notice type, matching the supplied design's `upd` palette.
+// Left-rail colour per notice type.
 const TYPE_TONE = {
-  "Electricity outage": "led-task",
-  "Water outage": "led-task b",
-  "Road closure": "led-task",
-  "Community event": "led-task g",
-  "General notice": "led-task",
+  "Business registration": "led-task g",
+  "Verification update": "led-task b",
+  "Compliance notice": "led-task",
+  "Funding opportunity": "led-task g",
+  "General business notice": "led-task",
 };
 
 const toLocalInput = (d) => {
@@ -26,7 +26,7 @@ const toLocalInput = (d) => {
 };
 
 const empty = {
-  type: "General notice",
+  type: "General business notice",
   headline: "",
   details: "",
   all_areas: false,
@@ -110,12 +110,12 @@ export default function OfficerUpdates() {
 
   return (
     <div>
-      <PageHeader title="Updates" subtitle="Publish or schedule notices to wards, by in-app, SMS or WhatsApp." />
+      <PageHeader title="Updates" subtitle="Publish or schedule business-related updates to wards, by in-app, SMS or WhatsApp." />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="space-y-4">
         {/* Composer */}
         <form onSubmit={submit} className="led-box space-y-3">
-          <h2 className="text-[17px] font-bold text-ink">New community update</h2>
+          <h2 className="text-[17px] font-bold text-ink">New business update</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="block text-xs font-semibold text-mute uppercase tracking-wide mb-1.5">Type</label>
@@ -145,12 +145,12 @@ export default function OfficerUpdates() {
 
           <div>
             <label className="block text-xs font-semibold text-mute uppercase tracking-wide mb-1.5">Headline</label>
-            <input value={form.headline} onChange={(e) => set("headline", e.target.value)} placeholder="e.g. Planned water interruption" className="led-field" />
+            <input value={form.headline} onChange={(e) => set("headline", e.target.value)} placeholder="e.g. New funding opportunity for SMEs" className="led-field" />
           </div>
 
           <div>
             <label className="block text-xs font-semibold text-mute uppercase tracking-wide mb-1.5">Details</label>
-            <textarea value={form.details} onChange={(e) => set("details", e.target.value)} rows={3} placeholder="What residents need to know…" className="led-field" />
+            <textarea value={form.details} onChange={(e) => set("details", e.target.value)} rows={3} placeholder="What businesses need to know…" className="led-field" />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -194,20 +194,20 @@ export default function OfficerUpdates() {
           </div>
         </form>
 
-        {/* Existing notices */}
+        {/* Business update notices */}
         <div>
-          <h2 className="text-[17px] font-bold text-ink mb-2.5">Existing notices</h2>
+          <h2 className="text-[17px] font-bold text-ink mb-2.5">Business update notices</h2>
           {loading ? (
             <SectionLoading />
           ) : notices.length === 0 ? (
-            <SectionEmpty>No notices yet.</SectionEmpty>
+            <SectionEmpty>No business updates yet.</SectionEmpty>
           ) : (
             <div>
               {notices
                 .sort((a, b) => new Date(b.created_date) - new Date(a.created_date))
                 .map((n) => (
-                  <div key={n.id} className={TYPE_TONE[n.type] || "led-task"}>
-                    <div className="min-w-0 flex-1">
+                  <div key={n.id} className={`${TYPE_TONE[n.type] || "led-task"} !items-start`}>
+                    <div className="min-w-0 flex-1 overflow-hidden pr-1">
                       <p className="font-semibold text-ink text-sm">
                         {n.headline} <StatusPill status={n.status} />
                       </p>
@@ -217,10 +217,10 @@ export default function OfficerUpdates() {
                       <p className="text-xs text-mute mt-0.5">
                         {formatSAST(n.starts_at)} → {formatSAST(n.ends_at)} · {(n.channels || []).join(", ")}
                       </p>
-                      {n.details && <p className="text-sm text-ink mt-1">{n.details}</p>}
+                      {n.details && <p className="text-sm text-ink mt-1 break-words">{n.details}</p>}
                     </div>
                     {(n.status === "active" || n.status === "scheduled") && (
-                      <div className="flex flex-col gap-1.5 flex-none">
+                      <div className="flex flex-col gap-1.5 flex-none shrink-0">
                         {n.status === "active" ? (
                           <button
                             onClick={() => setNoticeStatus(n, "resolved")}
