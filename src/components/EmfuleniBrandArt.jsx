@@ -61,8 +61,8 @@ export function EmfuleniBrand() {
         <path d="M30 62q20-4 40 12 6 4 12 2" stroke="#d9261c" strokeWidth="10" fill="none" strokeLinecap="round" />
         <path d="M20 84q24-8 52 8 12 6 28 2" stroke="#0f9a42" strokeWidth="10" fill="none" strokeLinecap="round" />
       </svg>
-      <b className="text-[15px] font-semibold tracking-tight leading-none text-white">EMFULENI</b>
-      <small className="text-[9px] tracking-[1.6px] text-gray-400 font-medium">LOCAL MUNICIPALITY</small>
+      <b className="text-[15px] font-semibold tracking-tight leading-none text-ink">EMFULENI</b>
+      <small className="text-[9px] tracking-[1.6px] text-mute font-medium">LOCAL MUNICIPALITY</small>
     </div>
   );
 }
