@@ -8,8 +8,8 @@ import { SectionLoading } from "@/components/SectionStates";
 import { formatRand } from "@/lib/ledUtils";
 import { ChevronRight } from "lucide-react";
 
-// Program card colours — cycle through the design's g / b / o palette.
-const PC = ["bg-brand text-white", "bg-aqua text-ink", "bg-tangerine text-white"];
+// Program card colours — forest-green civic palette.
+const PC = ["bg-[hsl(137_57%_20%)] text-white", "bg-[hsl(210_70%_45%)] text-white", "bg-[hsl(16_70%_48%)] text-white"];
 
 export default function OfficerDashboard() {
   const { data, loading } = useLedList(() =>
@@ -96,27 +96,24 @@ export default function OfficerDashboard() {
         <div>
           <h2 className="text-[17px] font-bold text-ink mb-2.5">Statistics</h2>
           <div className="grid grid-cols-3 gap-2.5 mb-3">
-            <div className="rounded-[12px] bg-soft p-3">
-              <b className="text-[22px] font-bold text-ink block leading-none">{biz.length}</b>
+            <div className="rounded-xl border border-line bg-[hsl(137_50%_97%)] p-3">
+              <b className="text-[22px] font-bold text-[hsl(137_57%_20%)] block leading-none">{biz.length}</b>
               <span className="text-mute text-xs">Businesses</span>
             </div>
-            <div className="rounded-[12px] bg-soft p-3">
-              <b className="text-[22px] font-bold text-ink block leading-none">{toReview.length}</b>
+            <div className="rounded-xl border border-line bg-[hsl(137_50%_97%)] p-3">
+              <b className="text-[22px] font-bold text-[hsl(137_57%_20%)] block leading-none">{toReview.length}</b>
               <span className="text-mute text-xs">To decide</span>
             </div>
-            <Link to="/officer/businesses" className="rounded-[12px] border-2 border-dashed border-line p-3 grid place-items-center text-mute hover:text-brand hover:border-brand/40">
+            <Link to="/officer/businesses" className="rounded-xl border-2 border-dashed border-line p-3 grid place-items-center text-mute hover:text-[hsl(137_57%_20%)] hover:border-[hsl(137_57%_20%/0.4)] transition-colors">
               <b className="text-lg leading-none">+</b>
               <span className="text-xs">New business</span>
             </Link>
           </div>
-          <div className="rounded-[14px] bg-soft p-4 relative overflow-hidden">
+          <div className="led-box relative overflow-hidden">
             <span className="text-mute text-xs">Open opportunities</span>
             <b className="text-[20px] text-ink block">{opps.length} live</b>
             <p className="text-mute text-xs mt-1 max-w-[60%]">Tenders and jobs open to the community right now.</p>
             <Link to="/officer/opportunities" className="led-btn led-btn-s mt-2 inline-flex">View</Link>
-            {/* decorative bubbles */}
-            <span className="absolute -right-8 -bottom-10 w-[130px] h-[130px] rounded-full bg-aqua/70" />
-            <span className="absolute right-12 -bottom-4 w-15 h-15 rounded-full bg-gold/80" style={{ width: 60, height: 60 }} />
           </div>
         </div>
       </div>

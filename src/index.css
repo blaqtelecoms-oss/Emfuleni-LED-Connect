@@ -27,10 +27,10 @@
     --radius: 0.875rem;
 
     /* Emfuleni brand palette */
-    --green: 137 82% 33%;           /* #0f9a42 */
-    --green-dark: 210 92% 35%;      /* #0a5ba8 */
-    --blue: 210 92% 35%;            /* #0a5ba8 */
-    --orange: 16 80% 58%;           /* warm accent */
+    --green: 137 57% 20%;           /* forest green #16563c */
+    --green-dark: 210 70% 45%;      /* deep blue */
+    --blue: 210 70% 45%;            /* civic blue */
+    --orange: 16 70% 50%;           /* civic amber */
     --gold: 49 92% 53%;             /* yellow #f7d117 */
     --ink: 214 14% 10%;             /* #15181d */
     --mute: 217 9% 57%;             /* #8a8f98 */
@@ -76,7 +76,7 @@
     --input: 229 11% 19%;
     --ring: 137 60% 45%;
 
-    --green: 137 60% 45%;
+    --green: 137 50% 45%;
     --green-dark: 210 70% 55%;
     --blue: 210 70% 55%;
     --orange: 16 80% 58%;
@@ -168,7 +168,7 @@
     background-image: linear-gradient(135deg, #0a5ba8, #0f9a42);
   }
 
-  /* Form input — clean professional */
+  /* Form input — civic service field */
   .led-input {
     width: 100%;
     font: inherit;
@@ -181,74 +181,114 @@
   }
   .led-input:focus {
     outline: none;
-    border-color: hsl(var(--green));
-    box-shadow: 0 0 0 3px hsl(var(--green) / 12%);
+    border-color: hsl(137 57% 20%);
+    box-shadow: 0 0 0 3px hsl(137 57% 20% / 12%);
   }
-  .led-input::placeholder { color: hsl(var(--mute)); opacity: .6; }
+  .led-input::placeholder { color: hsl(var(--mute)); opacity: .5; }
 
-  /* Portal buttons — solid professional */
+  /* Portal buttons — forest-green civic actions */
   .led-btn {
     border: 0;
-    background: hsl(var(--blue));
-    color: hsl(var(--inv));
+    background: hsl(137 57% 20%);
+    color: #fff;
     font-weight: 600;
     letter-spacing: 0.01em;
-    padding: 9px 16px;
+    padding: 10px 18px;
     border-radius: 10px;
     cursor: pointer;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     transition: background .15s, opacity .15s;
   }
-  .led-btn:hover { background: hsl(210 85% 30%); }
-  .led-btn:active { opacity: .9; }
+  .led-btn:hover { background: hsl(137 57% 16%); }
+  .led-btn:active { opacity: .88; }
   .led-btn:disabled { opacity: .5; cursor: default; }
-  .led-btn-s { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
+  .led-btn-s { padding: 5px 11px; font-size: 12px; border-radius: 8px; }
   .led-btn-l { background: hsl(var(--card)); color: hsl(var(--ink)); border: 1px solid hsl(var(--line)); }
-  .led-btn-l:hover { background: hsl(var(--soft)); border-color: hsl(var(--mute) / 0.4); }
+  .led-btn-l:hover { background: hsl(var(--soft)); border-color: hsl(137 57% 20% / 0.3); }
   .led-btn-r { background: hsl(var(--destructive)); color: #fff; }
   .led-btn-r:hover { background: hsl(5 76% 42%); }
 
-  /* Chips — clean filter pills */
+  /* Chips — civic filter pills */
   .led-chip {
     border: 1px solid hsl(var(--line));
     background: hsl(var(--card));
     color: hsl(var(--ink));
-    border-radius: 8px;
-    padding: 6px 13px;
+    border-radius: 999px;
+    padding: 6px 15px;
     font: inherit;
     font-size: 13px;
     font-weight: 500;
     cursor: pointer;
-    transition: background .15s, border-color .15s;
+    transition: background .15s, border-color .15s, color .15s;
   }
-  .led-chip:hover { background: hsl(var(--soft)); border-color: hsl(var(--mute) / 0.3); }
+  .led-chip:hover { background: hsl(var(--soft)); border-color: hsl(137 57% 20% / 0.2); }
   .led-chip.on {
-    background: hsl(var(--green));
+    background: hsl(137 57% 20%);
     color: #fff;
-    border-color: hsl(var(--green));
+    border-color: hsl(137 57% 20%);
   }
 
-  /* Dialog — clean professional surface */
+  /* Category badge — soft tinted pill (civic service tag) */
+  .led-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .led-tag-green  { background: hsl(137 50% 93%); color: hsl(137 57% 22%); }
+  .led-tag-blue   { background: hsl(210 60% 94%); color: hsl(210 70% 35%); }
+  .led-tag-amber  { background: hsl(45 80% 94%);  color: hsl(35 80% 30%); }
+  .led-tag-violet { background: hsl(270 50% 95%); color: hsl(270 50% 35%); }
+  .led-tag-neutral{ background: hsl(var(--soft)); color: hsl(var(--mute)); }
+
+  /* Icon tile — soft tinted square with rounded corners */
+  .led-icon-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    flex: none;
+  }
+  .led-icon-box-sm { width: 36px; height: 36px; }
+  .led-icon-box-md { width: 44px; height: 44px; }
+  .led-icon-green  { background: hsl(137 50% 93%); color: hsl(137 57% 22%); }
+  .led-icon-blue   { background: hsl(210 60% 94%); color: hsl(210 70% 38%); }
+  .led-icon-amber  { background: hsl(45 80% 94%);  color: hsl(35 75% 32%); }
+  .led-icon-violet { background: hsl(270 50% 95%); color: hsl(270 50% 38%); }
+  .led-icon-neutral{ background: hsl(var(--soft)); color: hsl(var(--mute)); }
+
+  /* Dialog — civic service surface */
   [data-state="open"][role="dialog"] {
-    border-radius: 14px !important;
-    box-shadow: 0 0 0 1px hsl(var(--line) / 0.4), 0 20px 48px -16px rgba(20,20,40,0.18) !important;
+    border-radius: 16px !important;
+    box-shadow: 0 0 0 1px hsl(var(--line) / 0.4), 0 24px 56px -20px rgba(20,20,40,0.18) !important;
+    overflow: hidden;
   }
   .dark [data-state="open"][role="dialog"] {
-    box-shadow: 0 0 0 1px hsl(var(--line) / 0.25), 0 20px 48px -16px rgba(0,0,0,0.45) !important;
+    box-shadow: 0 0 0 1px hsl(var(--line) / 0.25), 0 24px 56px -20px rgba(0,0,0,0.45) !important;
   }
 
-  /* Card / box — clean professional panel */
+  /* Card / box — civic service panel */
   .led-box {
     background: hsl(var(--card));
     border: 1px solid hsl(var(--line));
-    border-radius: 12px;
-    padding: 18px;
-    box-shadow: 0 1px 3px rgba(20,20,40,0.05);
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(20,20,40,0.04), 0 6px 16px -10px rgba(20,20,40,0.08);
     transition: border-color .2s, box-shadow .2s;
+    position: relative;
   }
-  .led-box + .led-box { margin-bottom: 16px; }
+  .led-box + .led-box { margin-bottom: 14px; }
 
-  /* Task row — clean coloured left rail */
+  /* Task row — civic left-rail service item */
   .led-task {
     display: flex;
     align-items: center;
@@ -256,19 +296,21 @@
     background: hsl(var(--card));
     border: 1px solid hsl(var(--line));
     border-left: 4px solid hsl(var(--orange));
-    border-radius: 10px;
-    padding: 12px 14px;
-    margin-bottom: 8px;
-    transition: border-color .15s, background .15s;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(20,20,40,0.03);
+    transition: border-color .15s, box-shadow .15s, transform .15s;
   }
   .led-task:hover {
-    background: hsl(var(--soft) / 0.5);
-    border-color: hsl(var(--mute) / 0.25);
+    border-color: hsl(137 57% 20% / 0.2);
+    box-shadow: 0 2px 10px -3px rgba(20,20,40,0.1);
+    transform: translateY(-1px);
   }
-  .led-task.g { border-left-color: hsl(var(--green)); }
-  .led-task.b { border-left-color: hsl(var(--blue)); }
+  .led-task.g { border-left-color: hsl(137 57% 20%); }
+  .led-task.b { border-left-color: hsl(210 70% 45%); }
 
-  /* Section inputs/selects — clean professional fields */
+  /* Section inputs/selects — civic form fields */
   .led-field {
     font: inherit;
     color: hsl(var(--ink));
@@ -281,10 +323,10 @@
   }
   .led-field:focus {
     outline: none;
-    border-color: hsl(var(--blue));
-    box-shadow: 0 0 0 3px hsl(var(--blue) / 12%);
+    border-color: hsl(137 57% 20%);
+    box-shadow: 0 0 0 3px hsl(137 57% 20% / 12%);
   }
-  .led-field::placeholder { color: hsl(var(--mute)); opacity: .6; }
+  .led-field::placeholder { color: hsl(var(--mute)); opacity: .5; }
 }
 
 /* ===== Emfuleni LED onboarding template (scoped to .onb-page) ===== */
