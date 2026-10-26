@@ -82,7 +82,7 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[240px_1fr_276px] h-[calc(100vh-32px)] overflow-hidden">
             {/* Sidebar */}
             <aside className="hidden lg:flex lg:p-3.5 min-h-0">
-              <div className="w-full h-full bg-card rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.14)] flex flex-col p-4 overflow-hidden">
+              <div className="w-full h-full bg-[#15181d] rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.14)] flex flex-col p-4 overflow-hidden">
                 {/* Brand */}
                 <div className="flex flex-col items-center gap-1.5 text-center pb-2">
                   <EmfuleniBrand />
@@ -93,7 +93,7 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
                   <button
                     type="button"
                     onClick={() => setEditOpen(true)}
-                    className="w-[54px] h-[54px] rounded-full mx-auto mb-1.5 grid place-items-center text-[18px] font-medium text-white bg-aqua shadow-[0_0_0_4px_hsl(var(--card)),0_0_0_5px_hsl(var(--line))] overflow-hidden cursor-pointer relative group"
+                    className="w-[54px] h-[54px] rounded-full mx-auto mb-1.5 grid place-items-center text-[18px] font-medium text-white bg-aqua shadow-[0_0_0_4px_#15181d,0_0_0_5px_#333] overflow-hidden cursor-pointer relative group"
                     title="Edit profile"
                   >
                     {user?.profile_picture
@@ -114,9 +114,9 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
                         })()
                       : initials}
                   </button>
-                  <p className="text-[12px] text-mute">Welcome back,</p>
-                  <b className="block text-[14px] font-semibold text-ink mt-0.5">{displayName}</b>
-                  <span className="block text-[11px] text-mute mt-0.5">{subtitle}</span>
+                  <p className="text-[12px] text-gray-400">Welcome back,</p>
+                  <b className="block text-[14px] font-semibold text-white mt-0.5">{displayName}</b>
+                  <span className="block text-[11px] text-gray-500 mt-0.5">{subtitle}</span>
                   {identityTag && (
                     <span
                       className={`inline-block mt-2 text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
@@ -147,8 +147,8 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
                         aria-current={active ? "page" : undefined}
                         className={`flex items-center gap-3 w-full px-2.5 py-2 rounded-[12px] text-[13px] cursor-pointer transition-colors ${
                           active
-                            ? "text-ink font-semibold"
-                            : "text-mute hover:bg-soft hover:text-ink"
+                            ? "bg-[hsl(137_82%_33%/0.2)] text-white font-semibold"
+                            : "text-gray-400 hover:bg-white/10 hover:text-white"
                         }`}
                       >
                         <Icon className="w-[17px] h-[17px] flex-none" strokeWidth={1.8} />
@@ -160,7 +160,7 @@ export default function PortalLayout({ portal, navItems, activeKey, allowedAccou
                   {/* Logout */}
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-3 w-full px-2.5 py-2 rounded-[12px] text-[13px] text-mute hover:bg-soft hover:text-ink cursor-pointer transition-colors border-t border-line pt-3 mt-2"
+                    className="flex items-center gap-3 w-full px-2.5 py-2 rounded-[12px] text-[13px] text-gray-400 hover:bg-white/10 hover:text-white cursor-pointer transition-colors border-t border-white/10 pt-3 mt-2"
                   >
                     <LogOut className="w-[17px] h-[17px] flex-none" strokeWidth={1.8} />
                     <span>Log out</span>
