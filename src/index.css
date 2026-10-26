@@ -153,7 +153,7 @@
     box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   }
   .shadow-soft {
-    box-shadow: 0 8px 28px rgba(20,20,40,0.08);
+    box-shadow: 0 2px 8px rgba(20,20,40,0.06);
   }
 
   /* Hide scrollbar for horizontal nav */
@@ -168,150 +168,123 @@
     background-image: linear-gradient(135deg, #0a5ba8, #0f9a42);
   }
 
-  /* Form input used across the auth surface — premium */
+  /* Form input — clean professional */
   .led-input {
     width: 100%;
     font: inherit;
     color: hsl(var(--ink));
-    background: linear-gradient(180deg, hsl(var(--card)), hsl(var(--shell) / 0.4));
-    border: 1px solid hsl(var(--line) / 0.7);
-    border-radius: 14px;
-    padding: 12px 14px;
-    transition: border-color .2s, box-shadow .2s, background .2s;
-    box-shadow: inset 0 1px 2px rgba(20,20,40,0.04);
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--line));
+    border-radius: 10px;
+    padding: 11px 14px;
+    transition: border-color .2s, box-shadow .2s;
   }
   .led-input:focus {
     outline: none;
     border-color: hsl(var(--green));
-    box-shadow:
-      0 0 0 4px hsl(var(--green) / 14%),
-      inset 0 1px 2px rgba(20,20,40,0.02);
-    background: hsl(var(--card));
+    box-shadow: 0 0 0 3px hsl(var(--green) / 12%);
   }
-  .led-input::placeholder { color: hsl(var(--mute)); opacity: .7; }
+  .led-input::placeholder { color: hsl(var(--mute)); opacity: .6; }
 
-  /* Portal buttons — premium gradient family */
+  /* Portal buttons — solid professional */
   .led-btn {
     border: 0;
-    background: linear-gradient(135deg, hsl(var(--blue)), hsl(200 80% 42%));
+    background: hsl(var(--blue));
     color: hsl(var(--inv));
     font-weight: 600;
     letter-spacing: 0.01em;
     padding: 9px 16px;
-    border-radius: 12px;
+    border-radius: 10px;
     cursor: pointer;
     white-space: nowrap;
-    transition: filter .2s, transform .15s, box-shadow .2s;
-    box-shadow:
-      0 4px 12px -4px hsl(var(--blue) / 0.4),
-      inset 0 1px 0 hsl(var(--inv) / 0.2);
+    transition: background .15s, opacity .15s;
   }
-  .led-btn:hover { filter: brightness(1.12); box-shadow: 0 8px 20px -6px hsl(var(--blue) / 0.5), inset 0 1px 0 hsl(var(--inv) / 0.3); }
-  .led-btn:active { transform: scale(.98); }
-  .led-btn:disabled { opacity: .55; cursor: default; box-shadow: none; }
-  .led-btn-s { padding: 5px 10px; font-size: 12px; }
-  .led-btn-l { background: hsl(var(--card)); color: hsl(var(--ink)); box-shadow: inset 0 0 0 1px hsl(var(--line)); }
-  .led-btn-l:hover { background: hsl(var(--soft)); }
-  .led-btn-r { background: hsl(var(--destructive)); color: #fff; box-shadow: 0 8px 18px -10px hsl(var(--destructive) / 0.5); }
+  .led-btn:hover { background: hsl(210 85% 30%); }
+  .led-btn:active { opacity: .9; }
+  .led-btn:disabled { opacity: .5; cursor: default; }
+  .led-btn-s { padding: 5px 10px; font-size: 12px; border-radius: 8px; }
+  .led-btn-l { background: hsl(var(--card)); color: hsl(var(--ink)); border: 1px solid hsl(var(--line)); }
+  .led-btn-l:hover { background: hsl(var(--soft)); border-color: hsl(var(--mute) / 0.4); }
+  .led-btn-r { background: hsl(var(--destructive)); color: #fff; }
+  .led-btn-r:hover { background: hsl(5 76% 42%); }
 
-  /* Chips */
+  /* Chips — clean filter pills */
   .led-chip {
     border: 1px solid hsl(var(--line));
     background: hsl(var(--card));
     color: hsl(var(--ink));
-    border-radius: 99px;
+    border-radius: 8px;
     padding: 6px 13px;
     font: inherit;
     font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background .2s, border-color .2s, transform .15s;
+    transition: background .15s, border-color .15s;
   }
-  .led-chip:hover { background: hsl(var(--soft)); }
-  .led-chip:active { transform: scale(.97); }
+  .led-chip:hover { background: hsl(var(--soft)); border-color: hsl(var(--mute) / 0.3); }
   .led-chip.on {
     background: hsl(var(--green));
-    color: hsl(var(--inv));
+    color: #fff;
     border-color: hsl(var(--green));
-    box-shadow: 0 6px 14px -8px hsl(var(--green) / 0.5);
   }
 
-  /* Premium dialog surface */
+  /* Dialog — clean professional surface */
   [data-state="open"][role="dialog"] {
-    border-radius: 20px !important;
-    box-shadow:
-      0 0 0 1px hsl(var(--line) / 0.5),
-      0 28px 72px -20px rgba(20,20,40,0.22),
-      0 10px 24px -12px rgba(20,20,40,0.14) !important;
+    border-radius: 14px !important;
+    box-shadow: 0 0 0 1px hsl(var(--line) / 0.4), 0 20px 48px -16px rgba(20,20,40,0.18) !important;
   }
   .dark [data-state="open"][role="dialog"] {
-    box-shadow:
-      0 0 0 1px hsl(var(--line) / 0.3),
-      0 28px 72px -20px rgba(0,0,0,0.5),
-      0 10px 24px -12px rgba(0,0,0,0.3) !important;
+    box-shadow: 0 0 0 1px hsl(var(--line) / 0.25), 0 20px 48px -16px rgba(0,0,0,0.45) !important;
   }
 
-  /* Card / box — premium elevated panel */
+  /* Card / box — clean professional panel */
   .led-box {
-    background: linear-gradient(180deg, hsl(var(--card)), hsl(var(--shell) / 0.5));
-    border: 1px solid hsl(var(--line) / 0.6);
-    border-radius: 20px;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--line));
+    border-radius: 12px;
     padding: 18px;
-    box-shadow:
-      0 1px 3px rgba(20,20,40,0.04),
-      0 10px 30px -10px rgba(20,20,40,0.10),
-      inset 0 1px 0 hsl(var(--inv) / 0.7);
-    transition: border-color .25s, box-shadow .25s, transform .25s;
+    box-shadow: 0 1px 3px rgba(20,20,40,0.05);
+    transition: border-color .2s, box-shadow .2s;
   }
   .led-box + .led-box { margin-bottom: 16px; }
 
-  /* Task row — coloured left rail */
+  /* Task row — clean coloured left rail */
   .led-task {
     display: flex;
     align-items: center;
     gap: 10px;
-    background: linear-gradient(180deg, hsl(var(--card)), hsl(var(--shell) / 0.4));
-    border: 1px solid hsl(var(--line) / 0.6);
-    border-left: 5px solid hsl(var(--orange));
-    border-radius: 14px;
-    padding: 12px 13px;
-    margin-bottom: 10px;
-    box-shadow:
-      0 1px 3px rgba(20,20,40,0.04),
-      0 8px 22px -14px rgba(20,20,40,0.22),
-      inset 0 1px 0 hsl(var(--inv) / 0.6);
-    transition: transform .18s, box-shadow .18s, border-color .18s;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--line));
+    border-left: 4px solid hsl(var(--orange));
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    transition: border-color .15s, background .15s;
   }
   .led-task:hover {
-    transform: translateY(-2px);
-    box-shadow:
-      0 1px 3px rgba(20,20,40,0.06),
-      0 14px 34px -16px rgba(20,20,40,0.28),
-      inset 0 1px 0 hsl(var(--inv) / 0.8);
+    background: hsl(var(--soft) / 0.5);
+    border-color: hsl(var(--mute) / 0.25);
   }
   .led-task.g { border-left-color: hsl(var(--green)); }
   .led-task.b { border-left-color: hsl(var(--blue)); }
 
-  /* Section inputs/selects — premium form fields */
+  /* Section inputs/selects — clean professional fields */
   .led-field {
     font: inherit;
     color: hsl(var(--ink));
-    background: linear-gradient(180deg, hsl(var(--card)), hsl(var(--shell) / 0.4));
-    border: 1px solid hsl(var(--line) / 0.7);
-    border-radius: 13px;
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--line));
+    border-radius: 10px;
     padding: 10px 13px;
     width: 100%;
-    transition: border-color .2s, box-shadow .2s, background .2s;
-    box-shadow: inset 0 1px 2px rgba(20,20,40,0.04);
+    transition: border-color .2s, box-shadow .2s;
   }
   .led-field:focus {
     outline: none;
     border-color: hsl(var(--blue));
-    box-shadow:
-      0 0 0 4px hsl(var(--blue) / 14%),
-      inset 0 1px 2px rgba(20,20,40,0.02);
-    background: hsl(var(--card));
+    box-shadow: 0 0 0 3px hsl(var(--blue) / 12%);
   }
-  .led-field::placeholder { color: hsl(var(--mute)); opacity: .7; }
+  .led-field::placeholder { color: hsl(var(--mute)); opacity: .6; }
 }
 
 /* ===== Emfuleni LED onboarding template (scoped to .onb-page) ===== */

@@ -23,11 +23,11 @@ export default function FundingProgramCard({ program, business, docs, hasApp, on
   return (
     <button
       onClick={onOpen}
-      className="led-box text-left flex flex-col group transition-all duration-250 hover:-translate-y-1 hover:shadow-[0_1px_3px_rgba(20,20,40,0.06),0_18px_44px_-12px_rgba(20,20,40,0.16),inset_0_1px_0_hsl(var(--inv)/0.8)] hover:border-[hsl(var(--green)/0.25)]"
+      className="led-box text-left flex flex-col group transition-colors hover:border-[hsl(var(--green)/0.3)]"
     >
       <div className="flex items-start justify-between gap-2 mb-1">
         <b className="text-sm text-ink leading-snug">{program.name}</b>
-        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-gradient-to-br from-soft to-shell text-mute whitespace-nowrap border border-line/50">
+        <span className="text-[10px] font-semibold px-2.5 py-1 rounded-md bg-soft text-mute whitespace-nowrap border border-line">
           {program.funder}
         </span>
       </div>
@@ -65,8 +65,8 @@ export default function FundingProgramCard({ program, business, docs, hasApp, on
           <span className="text-[10px] text-mute ml-auto">Standing</span>
         )}
       </div>
-      <div className="mt-auto flex items-center justify-between pt-1 border-t border-line/40">
-        <span className="text-xs text-brand font-semibold flex items-center gap-1 group-hover:gap-2 transition-all">
+      <div className="mt-auto flex items-center justify-between pt-2 border-t border-line">
+        <span className="text-xs text-brand font-semibold flex items-center gap-1">
           View details <ExternalLink className="w-3.5 h-3.5" />
         </span>
         {hasApp && <StatusPill status="submitted" />}

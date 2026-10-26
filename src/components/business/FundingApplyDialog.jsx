@@ -131,7 +131,7 @@ export default function FundingApplyDialog({ program, business, docs, onSubmitte
 
         <form onSubmit={submit} className="flex flex-col min-h-0 flex-1">
           <div className="overflow-y-auto px-5 py-4 space-y-4">
-            <div className="led-box bg-gradient-to-br from-soft/50 to-shell/30 flex items-start gap-2.5 text-xs text-mute" style={{ boxShadow: "inset 0 1px 0 hsl(var(--inv) / 0.5)" }}>
+            <div className="led-box bg-soft/40 flex items-start gap-2.5 text-xs text-mute">
               <Lock className="w-4 h-4 text-brand flex-none mt-0.5" />
               <span>Your application and documents are stored privately and are visible only to you and LED officers. You can also apply on the official portal — this LED portal application is forwarded to the LED office for review.</span>
             </div>
