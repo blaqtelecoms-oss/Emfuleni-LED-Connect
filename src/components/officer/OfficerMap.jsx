@@ -1,93 +1,164 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo } from "react";
+import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import { base44 } from "@/api/base44Client";
 import { useLedList } from "@/hooks/useLedList";
 import PageHeader from "@/components/PageHeader";
 import { SectionLoading, SectionEmpty } from "@/components/SectionStates";
-import { Map as MapIcon, Store, Flag } from "lucide-react";
+import { Store } from "lucide-react";
 
-const HEAT = ["bg-soft", "bg-aqua/40", "bg-aqua/70", "bg-brand/60", "bg-brand/90", "bg-brand text-white"];
+// Emfuleni Local Municipality — Vereeniging / Vaal Triangle
+const EMFULENI_CENTER = [-26.6736, 27.9261];
+const EMFULENI_ZOOM = 12;
+
+// Custom pin marker for businesses (brand green)
+const businessIcon = L.divIcon({
+  className: "led-biz-pin",
+  html: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 22s-7-7.58-7-12a7 7 0 0 1 14 0c0 4.42-7 12-7 12z" fill="#1d6b38" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="12" cy="10" r="3" fill="#fff"/>
+  </svg>`,
+  iconSize: [30, 30],
+  iconAnchor: [15, 30],
+  popupAnchor: [0, -28],
+});
 
 export default function OfficerMap() {
   const { data, loading } = useLedList(() =>
     Promise.all([
-      base44.entities.Ward.list().catch(() => []),
       base44.entities.Business.list().catch(() => []),
-      base44.entities.Report.list().catch(() => []),
+      base44.entities.Ward.list().catch(() => []),
     ])
   );
 
-  const [metric, setMetric] = useState("businesses");
+  const businesses = data?.[0] || [];
+  const wards = data?.[1] || [];
 
-  const wards = data?.[0] || [];
-  const businesses = data?.[1] || [];
-  const reports = data?.[2] || [];
+  // Only businesses with valid coordinates
+  const mapped = useMemo(
+    () =>
+      businesses.filter(
+        (b) =>
+          b.latitude != null &&
+          b.longitude != null &&
+          !isNaN(b.latitude) &&
+          !isNaN(b.longitude)
+      ),
+    [businesses]
+  );
 
-  const wardStats = useMemo(() => {
-    if (!wards.length) return [];
-    return wards.map((w) => {
-      const bizCount = businesses.filter((b) => b.ward === w.area_name || b.area === w.area_name).length;
-      const reportCount = reports.filter((r) => r.area === w.area_name).length;
-      return { ...w, bizCount, reportCount };
+  // Unique areas that have businesses but no coordinates (for fallback display)
+  const areaCounts = useMemo(() => {
+    const counts = {};
+    businesses.forEach((b) => {
+      const area = b.area || b.ward || "Unknown";
+      counts[area] = (counts[area] || 0) + 1;
     });
-  }, [wards, businesses, reports]);
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }, [businesses]);
 
   if (loading) return <SectionLoading />;
-  if (!wardStats.length)
-    return (
-      <div>
-        <PageHeader title="Map" subtitle="Ward coverage across Emfuleni's wards." />
-        <SectionEmpty>No ward data yet. Add wards to see coverage.</SectionEmpty>
-      </div>
-    );
-
-  const values = wardStats.map((w) => (metric === "businesses" ? w.bizCount : w.reportCount));
-  const max = Math.max(...values, 1);
-
-  const heatLevel = (v) => {
-    if (v === 0) return 0;
-    const pct = v / max;
-    if (pct > 0.8) return 5;
-    if (pct > 0.6) return 4;
-    if (pct > 0.4) return 3;
-    if (pct > 0.2) return 2;
-    return 1;
-  };
 
   return (
     <div>
-      <PageHeader title="Map" subtitle="Ward coverage heatmap across Emfuleni's wards." />
+      <PageHeader title="Map" subtitle="Business locations across Emfuleni's wards." />
 
-      <div className="flex gap-2 mb-4">
-        <button onClick={() => setMetric("businesses")} className={`led-chip ${metric === "businesses" ? "on" : ""}`}>Businesses</button>
-        <button onClick={() => setMetric("reports")} className={`led-chip ${metric === "reports" ? "on" : ""}`}>Service reports</button>
+      <div className="flex flex-wrap gap-2 mb-3">
+        <span className="led-chip on flex items-center gap-1.5">
+          <Store className="w-3.5 h-3.5" />
+          {mapped.length} pinned
+        </span>
+        <span className="led-chip">
+          {businesses.length} total businesses
+        </span>
+        {wards.length > 0 && <span className="led-chip">{wards.length} wards</span>}
       </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
-        {wardStats.map((w) => {
-          const val = metric === "businesses" ? w.bizCount : w.reportCount;
-          const level = heatLevel(val);
-          return (
-            <div key={w.id || w.number} className={`rounded-[12px] p-3 ${HEAT[level]} transition-all`}>
-              <div className="flex items-center justify-between mb-1">
-                <b className="text-sm">Ward {w.number}</b>
-                {metric === "businesses" ? <Store className="w-3.5 h-3.5 opacity-70" /> : <Flag className="w-3.5 h-3.5 opacity-70" />}
+      {businesses.length === 0 ? (
+        <SectionEmpty>No business data yet.</SectionEmpty>
+      ) : (
+        <>
+          {/* OpenStreetMap */}
+          <div className="rounded-2xl overflow-hidden border border-line shadow-sm" style={{ height: "500px" }}>
+            <MapContainer
+              center={EMFULENI_CENTER}
+              zoom={EMFULENI_ZOOM}
+              scrollWheelZoom
+              style={{ height: "100%", width: "100%" }}
+            >
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              {mapped.map((b) => (
+                <Marker key={b.id} position={[b.latitude, b.longitude]} icon={businessIcon}>
+                  <Popup>
+                    <div style={{ minWidth: "180px" }}>
+                      <strong style={{ fontSize: "14px", color: "#1d6b38" }}>
+                        {b.name || b.trading_name || "Business"}
+                      </strong>
+                      {b.area && (
+                        <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
+                          {b.area}{b.ward ? ` · ${b.ward}` : ""}
+                        </div>
+                      )}
+                      {b.sector && (
+                        <div style={{ fontSize: "12px", color: "#666" }}>{b.sector}</div>
+                      )}
+                      {b.address && (
+                        <div style={{ fontSize: "12px", color: "#999", marginTop: "4px" }}>
+                          {b.address}
+                        </div>
+                      )}
+                      {b.status && (
+                        <div style={{ fontSize: "11px", marginTop: "4px", textTransform: "capitalize" }}>
+                          Status: {b.status}
+                        </div>
+                      )}
+                    </div>
+                  </Popup>
+                </Marker>
+              ))}
+
+              {/* Fallback: show a circle marker at Emfuleni center if no pinned businesses */}
+              {mapped.length === 0 && (
+                <CircleMarker
+                  center={EMFULENI_CENTER}
+                  radius={20}
+                  pathOptions={{ color: "#1d6b38", fillColor: "#1d6b38", fillOpacity: 0.2 }}
+                >
+                  <Popup>Emfuleni Local Municipality</Popup>
+                </CircleMarker>
+              )}
+            </MapContainer>
+          </div>
+
+          {/* Area summary for businesses without coordinates */}
+          {mapped.length === 0 && areaCounts.length > 0 && (
+            <div className="mt-4 led-box">
+              <h3 className="text-sm font-bold text-ink mb-2">
+                Businesses by area (no coordinates yet)
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+                {areaCounts.map(([area, count]) => (
+                  <div key={area} className="rounded-lg p-2.5 bg-soft">
+                    <span className="text-xs font-semibold text-ink block">{area}</span>
+                    <b className="text-sm text-brand">{count}</b>
+                  </div>
+                ))}
               </div>
-              <span className="text-xs opacity-80 block">{w.area_name}</span>
-              <b className="text-[20px] block mt-1">{val}</b>
             </div>
-          );
-        })}
-      </div>
+          )}
 
-      <div className="mt-5 led-box flex items-center gap-4">
-        <span className="text-xs font-semibold text-mute">Coverage</span>
-        <div className="flex items-center gap-1.5">
-          {HEAT.map((h, i) => (
-            <div key={i} className={`w-8 h-3.5 rounded ${h}`} />
-          ))}
-        </div>
-        <span className="text-xs text-mute">Low → High</span>
-      </div>
+          {mapped.length > 0 && mapped.length < businesses.length && (
+            <p className="text-xs text-mute mt-2">
+              Showing {mapped.length} of {businesses.length} businesses.{" "}
+              {businesses.length - mapped.length} have no coordinates yet.
+            </p>
+          )}
+        </>
+      )}
     </div>
   );
 }

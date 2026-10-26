@@ -206,8 +206,8 @@ export default function OfficerUpdates() {
               {notices
                 .sort((a, b) => new Date(b.created_date) - new Date(a.created_date))
                 .map((n) => (
-                  <div key={n.id} className={TYPE_TONE[n.type] || "led-task"}>
-                    <div className="min-w-0 flex-1">
+                  <div key={n.id} className={`${TYPE_TONE[n.type] || "led-task"} !items-start`}>
+                    <div className="min-w-0 flex-1 overflow-hidden pr-1">
                       <p className="font-semibold text-ink text-sm">
                         {n.headline} <StatusPill status={n.status} />
                       </p>
@@ -217,10 +217,10 @@ export default function OfficerUpdates() {
                       <p className="text-xs text-mute mt-0.5">
                         {formatSAST(n.starts_at)} → {formatSAST(n.ends_at)} · {(n.channels || []).join(", ")}
                       </p>
-                      {n.details && <p className="text-sm text-ink mt-1">{n.details}</p>}
+                      {n.details && <p className="text-sm text-ink mt-1 break-words">{n.details}</p>}
                     </div>
                     {(n.status === "active" || n.status === "scheduled") && (
-                      <div className="flex flex-col gap-1.5 flex-none">
+                      <div className="flex flex-col gap-1.5 flex-none shrink-0">
                         {n.status === "active" ? (
                           <button
                             onClick={() => setNoticeStatus(n, "resolved")}
