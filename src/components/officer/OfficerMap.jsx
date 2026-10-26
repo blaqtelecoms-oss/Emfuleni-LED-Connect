@@ -1,6 +1,5 @@
 import React, { useMemo } from "react";
-import { MapContainer, TileLayer, Marker, Popup, CircleMarker } from "react-leaflet";
-import L from "leaflet";
+import { MapContainer, TileLayer, Popup, CircleMarker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { base44 } from "@/api/base44Client";
 import { useLedList } from "@/hooks/useLedList";
@@ -11,18 +10,6 @@ import { Store } from "lucide-react";
 // Emfuleni Local Municipality — Vereeniging / Vaal Triangle
 const EMFULENI_CENTER = [-26.6736, 27.9261];
 const EMFULENI_ZOOM = 12;
-
-// Custom pin marker for businesses (brand green)
-const businessIcon = L.divIcon({
-  className: "led-biz-pin",
-  html: `<svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 22s-7-7.58-7-12a7 7 0 0 1 14 0c0 4.42-7 12-7 12z" fill="#1d6b38" stroke="#fff" stroke-width="1.5"/>
-    <circle cx="12" cy="10" r="3" fill="#fff"/>
-  </svg>`,
-  iconSize: [30, 30],
-  iconAnchor: [15, 30],
-  popupAnchor: [0, -28],
-});
 
 export default function OfficerMap() {
   const { data, loading } = useLedList(() =>
@@ -92,33 +79,55 @@ export default function OfficerMap() {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
               {mapped.map((b) => (
-                <Marker key={b.id} position={[b.latitude, b.longitude]} icon={businessIcon}>
+                <CircleMarker
+                  key={b.id}
+                  center={[b.latitude, b.longitude]}
+                  radius={8}
+                  pathOptions={{ color: "#fff", weight: 2, fillColor: "#1d6b38", fillOpacity: 0.9 }}
+                >
                   <Popup>
-                    <div style={{ minWidth: "180px" }}>
-                      <strong style={{ fontSize: "14px", color: "#1d6b38" }}>
+                    <div style={{ minWidth: "200px" }}>
+                      <strong style={{ fontSize: "14px", color: "#1d6b38", display: "block", marginBottom: "4px" }}>
                         {b.name || b.trading_name || "Business"}
                       </strong>
-                      {b.area && (
-                        <div style={{ fontSize: "12px", color: "#666", marginTop: "2px" }}>
-                          {b.area}{b.ward ? ` · ${b.ward}` : ""}
+                      {b.sector && (
+                        <div style={{ fontSize: "12px", color: "#444", marginBottom: "2px" }}>
+                          <b>Sector:</b> {b.sector}
                         </div>
                       )}
-                      {b.sector && (
-                        <div style={{ fontSize: "12px", color: "#666" }}>{b.sector}</div>
+                      {b.area && (
+                        <div style={{ fontSize: "12px", color: "#444", marginBottom: "2px" }}>
+                          <b>Area:</b> {b.area}{b.ward ? ` · ${b.ward}` : ""}
+                        </div>
                       )}
                       {b.address && (
-                        <div style={{ fontSize: "12px", color: "#999", marginTop: "4px" }}>
+                        <div style={{ fontSize: "12px", color: "#666", marginBottom: "2px" }}>
                           {b.address}
                         </div>
                       )}
+                      {b.owner_name && (
+                        <div style={{ fontSize: "12px", color: "#444", marginBottom: "2px" }}>
+                          <b>Owner:</b> {b.owner_name}
+                        </div>
+                      )}
+                      {b.phone && (
+                        <div style={{ fontSize: "12px", color: "#666", marginBottom: "2px" }}>
+                          <b>Phone:</b> {b.phone}
+                        </div>
+                      )}
+                      {b.staff_band && (
+                        <div style={{ fontSize: "12px", color: "#444", marginBottom: "2px" }}>
+                          <b>Staff:</b> {b.staff_band}
+                        </div>
+                      )}
                       {b.status && (
-                        <div style={{ fontSize: "11px", marginTop: "4px", textTransform: "capitalize" }}>
+                        <div style={{ fontSize: "11px", marginTop: "4px", textTransform: "capitalize", color: "#999" }}>
                           Status: {b.status}
                         </div>
                       )}
                     </div>
                   </Popup>
-                </Marker>
+                </CircleMarker>
               ))}
 
               {/* Fallback: show a circle marker at Emfuleni center if no pinned businesses */}
