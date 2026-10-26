@@ -2,7 +2,7 @@
 
 // Brand mark (attached Emfuleni Local Municipality logo)
 export const LOGO_URL =
-  "https://media.base44.com/images/public/6accb538d1f89e245701b224/6a853b1e2_Emfuleni-Water-And-Sanitation-removebg-preview.png";
+  "https://media.base44.com/images/public/6adb1dca445c65a54c4a5a56/f045ea6f5_Emfuleni-Water-And-Sanitation.png";
 
 // Generated login hero photograph
 export const HERO_URL =
