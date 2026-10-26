@@ -128,22 +128,18 @@
 }
 
 @layer utilities {
-  /* Premium portal background — vibrant Canva-like multi-colour gradient */
+  /* Premium portal background — warm light gray with subtle brand-tinted glows */
   .portal-bg {
     background:
-      radial-gradient(ellipse 80% 65% at 5% 0%, rgba(34, 197, 94, 0.5), transparent 55%),
-      radial-gradient(ellipse 75% 60% at 98% 8%, rgba(59, 130, 246, 0.45), transparent 55%),
-      radial-gradient(ellipse 70% 65% at 50% 100%, rgba(251, 191, 36, 0.42), transparent 50%),
-      radial-gradient(ellipse 65% 60% at 90% 92%, rgba(236, 72, 153, 0.35), transparent 45%),
-      linear-gradient(135deg, #c8f7d5 0%, #c3dcf7 30%, #fce8c8 60%, #f5d6eb 100%);
+      radial-gradient(55% 45% at 0% 0%, hsl(var(--green) / 0.06), transparent 70%),
+      radial-gradient(50% 50% at 100% 100%, hsl(var(--blue) / 0.06), transparent 70%),
+      hsl(var(--out));
   }
   .dark .portal-bg {
     background:
-      radial-gradient(ellipse 80% 65% at 5% 0%, rgba(34, 197, 94, 0.35), transparent 55%),
-      radial-gradient(ellipse 75% 60% at 98% 8%, rgba(59, 130, 246, 0.32), transparent 55%),
-      radial-gradient(ellipse 70% 65% at 50% 100%, rgba(251, 191, 36, 0.28), transparent 50%),
-      radial-gradient(ellipse 65% 60% at 90% 92%, rgba(236, 72, 153, 0.22), transparent 45%),
-      linear-gradient(135deg, #0e1a12 0%, #0e1422 30%, #1e160e 60%, #1a0e1c 100%);
+      radial-gradient(55% 45% at 0% 0%, hsl(var(--green) / 0.08), transparent 70%),
+      radial-gradient(50% 50% at 100% 100%, hsl(var(--blue) / 0.08), transparent 70%),
+      hsl(var(--out));
   }
 
   /* Flat surfaces (replacing glass) */
